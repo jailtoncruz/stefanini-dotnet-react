@@ -35,7 +35,6 @@ RUN apk add --no-cache icu-libs
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
-ENV PORT=8080
 
 COPY --from=api-builder /app/publish .
 COPY --from=web-builder /StefaniniDotNetReactChallenge.API/wwwroot ./wwwroot
@@ -45,7 +44,7 @@ USER dotnetuser
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost:8080/api/health || exit 1
+# HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
+#     CMD curl -f http://localhost:8080/api/health || exit 1
 
 ENTRYPOINT ["dotnet", "StefaniniDotNetReactChallenge.API.dll"]
