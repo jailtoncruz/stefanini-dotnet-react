@@ -11,8 +11,4 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.5" />
     <PackageReference Include="Yarp.ReverseProxy" Version="2.3.0" />
   </ItemGroup>
-
-  <Target Name="CopyReactBuildFiles" BeforeTargets="Build">
-    <Exec Command="npm run build:web" Condition="'$(Configuration)' == 'Release'" />
-  </Target>
 </Project>

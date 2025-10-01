@@ -10,7 +10,13 @@
     "build:api": "dotnet build StefaniniDotNetReactChallenge.API --configuration Release",
     "build:web": "cd StefaniniDotNetReactChallenge.Web && npm run build",
     "install:web": "cd StefaniniDotNetReactChallenge.Web && npm install",
-    "start": "dotnet run --project StefaniniDotNetReactChallenge.API"
+    "start": "dotnet run --project StefaniniDotNetReactChallenge.API",
+    "docker:build": "docker build -t stefanini-dotnet-react-challenge .",
+    "docker:run": "docker run -p 8080:8080 stefanini-dotnet-react-challenge",
+    "docker:dev": "docker-compose up --build",
+    "docker:prod": "docker-compose -f docker-compose.prod.yml up --build",
+    "docker:stop": "docker-compose down",
+    "docker:clean": "docker system prune -f"
   },
   "keywords": [],
   "author": "Jailton Cruz",

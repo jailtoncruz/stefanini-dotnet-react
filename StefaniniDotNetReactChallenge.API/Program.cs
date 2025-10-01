@@ -6,6 +6,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddHealthChecks();
+
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
@@ -22,10 +24,11 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
+app.UseSwagger();
+app.UseSwaggerUI();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
     app.UseCors("AllowReactApp");
     app.MapReverseProxy();
 }
@@ -36,12 +39,12 @@ else
     {
         FileProvider = new PhysicalFileProvider(staticFilesPath)
     });
-
-    app.MapFallbackToController("Index", "Fallback");
+    app.MapFallbackToFile("index.html");
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/api/health");
 
 app.Run();
