@@ -1,0 +1,25 @@
+{
+  "name": "challenge-dotnet-react",
+  "description": "",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "turbo run dev:web dev:api --parallel",
+    "dev:api": "dotnet run --project StefaniniDotNetReactChallenge.API --launch-profile https",
+    "dev:web": "cd StefaniniDotNetReactChallenge.Web && npm run dev",
+    "build": "turbo run build:web build:api",
+    "build:api": "dotnet build StefaniniDotNetReactChallenge.API --configuration Release",
+    "build:web": "cd StefaniniDotNetReactChallenge.Web && npm run build",
+    "install:web": "cd StefaniniDotNetReactChallenge.Web && npm install",
+    "start": "dotnet run --project StefaniniDotNetReactChallenge.API"
+  },
+  "keywords": [],
+  "author": "Jailton Cruz",
+  "license": "MIT",
+  "packageManager": "pnpm@10.13.1",
+  "devDependencies": {
+    "turbo": "^2.5.8"
+  },
+  "workspaces": [
+    "StefaniniDotNetReactChallenge.Web"
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "recommendations": [
+    "ms-dotnettools.csharp",
+    "bradlc.vscode-tailwindcss",
+    "esbenp.prettier-vscode"
+  ]
+}
