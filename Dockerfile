@@ -31,7 +31,7 @@ RUN dotnet publish "StefaniniDotNetReactChallenge.API.csproj" -c Release -o /app
 FROM mcr.microsoft.com/dotnet/aspnet:9.0-alpine AS final
 WORKDIR /app
 
-RUN apk add --no-cache icu-libs
+RUN apk add --no-cache icu-libs curl
 ENV DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=false
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_URLS=http://+:8080
@@ -44,7 +44,7 @@ USER dotnetuser
 
 EXPOSE 8080
 
-# HEALTHCHECK --interval=30s --timeout=3s --start-period=30s --retries=3 \
-#     CMD curl -f http://localhost:8080/api/health || exit 1
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=5 \
+    CMD curl -f http://localhost:8080/api/health || exit 1
 
 ENTRYPOINT ["dotnet", "StefaniniDotNetReactChallenge.API.dll"]
