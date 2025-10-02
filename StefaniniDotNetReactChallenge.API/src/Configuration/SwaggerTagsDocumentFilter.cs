@@ -7,7 +7,7 @@ public class SwaggerTagsDocumentFilter : IDocumentFilter
     {
         swaggerDoc.Tags = new List<OpenApiTag>
         {
-            new OpenApiTag { Name = "People", Description = "People Endpoints" },
+            new OpenApiTag { Name = "Person", Description = "Person Endpoints" },
             new OpenApiTag { Name = "HealthCheck", Description = "Health Checker Endpoints" }
         };
     }

@@ -21,7 +21,7 @@ namespace StefaniniDotNetReactChallenge.Extensions
 
             services.AddVersionedApiExplorer(options =>
             {
-                options.GroupNameFormat = "'v'VVV";
+                options.GroupNameFormat = "'v'VV";
                 options.SubstituteApiVersionInUrl = true;
             });
 
