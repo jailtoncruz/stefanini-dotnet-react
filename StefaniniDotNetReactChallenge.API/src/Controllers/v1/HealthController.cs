@@ -4,7 +4,9 @@ using Microsoft.Extensions.Diagnostics.HealthChecks;
 namespace StefaniniDotNetReactChallenge.API.Controllers;
 
 [ApiController]
-[Route("api/health")]
+[ApiVersion("1.0"), ApiVersion("2.0")]
+[Route("api/v{version:apiVersion}/health")]
+[Tags("HealthCheck")]
 public class HealthController : BaseApiController
 {
     private readonly HealthCheckService _healthCheckService;

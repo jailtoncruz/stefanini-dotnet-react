@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "turbo run dev:web dev:api --parallel",
-    "dev:api": "dotnet run --project StefaniniDotNetReactChallenge.API --launch-profile https",
+    "dev:api": "dotnet watch --project StefaniniDotNetReactChallenge.API --launch-profile https",
     "dev:web": "cd StefaniniDotNetReactChallenge.Web && npm run dev",
     "build": "turbo run build:web build:api",
     "build:api": "dotnet build StefaniniDotNetReactChallenge.API --configuration Release",

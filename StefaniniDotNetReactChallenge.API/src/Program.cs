@@ -1,36 +1,32 @@
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using StefaniniDotNetReactChallenge.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
 builder.Services.AddHealthChecks();
 
-builder.Services.AddReverseProxy()
-    .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
-
-builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowReactApp",
-        policy =>
-        {
-            policy.WithOrigins("http://localhost:5173")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-});
+builder.Services.AddApiVersioningConfigured();
+builder.Services.AddSwaggerConfigured();
+builder.Services.AddCorsConfigured(builder.Configuration);
+builder.Services.AddReverseProxy().LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
 var app = builder.Build();
 
-app.UseSwagger();
-app.UseSwaggerUI();
+app.UseAuthorization();
+
+var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
+app.UseSwaggerConfigured(provider);
 
 if (app.Environment.IsDevelopment())
 {
     app.UseCors("AllowReactApp");
-    app.MapReverseProxy();
+    app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"), appBuilder =>
+   {
+       app.MapReverseProxy();
+   });
 }
 else
 {
@@ -43,7 +39,6 @@ else
 }
 
 app.UseHttpsRedirection();
-app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/api/health");
 

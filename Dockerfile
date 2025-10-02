@@ -44,7 +44,7 @@ USER dotnetuser
 
 EXPOSE 8080
 
-HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=5 \
+HEALTHCHECK --interval=30s --timeout=10s --start-period=90s --retries=5 \
     CMD curl -f http://localhost:8080/api/health || exit 1
 
 ENTRYPOINT ["dotnet", "StefaniniDotNetReactChallenge.API.dll"]
