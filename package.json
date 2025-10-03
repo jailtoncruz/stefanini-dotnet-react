@@ -16,7 +16,8 @@
     "docker:dev": "docker-compose up --build",
     "docker:prod": "docker-compose -f docker-compose.prod.yml up --build",
     "docker:stop": "docker-compose down",
-    "docker:clean": "docker system prune -f"
+    "docker:clean": "docker system prune -f",
+    "test": "dotnet test --settings coverlet.runsettings"
   },
   "keywords": [],
   "author": "Jailton Cruz",
