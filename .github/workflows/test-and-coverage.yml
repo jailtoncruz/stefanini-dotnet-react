@@ -37,11 +37,8 @@ jobs:
       - name: Install Qlty CLI
         run: curl -sSL https://qlty.sh/install.sh | bash
 
-      - name: Publish coverage to Qlty
-        run: |
-          qlty coverage publish \
-            --token=${{ secrets.QLTY_TOKEN }} \
-            --override-build-id=${{ github.run_id }} \
-            --override-commit-sha=${{ github.sha }} \
-            --override-branch=${{ github.ref_name }} \
-            coveragereport/Cobertura.xml
+      - uses: qltysh/qlty-action/coverage@v2
+        name: Publish coverage to Qlty
+        with:
+          token: ${{ secrets.QLTY_TOKEN }}
+          files: coveragereport/Cobertura.xml
