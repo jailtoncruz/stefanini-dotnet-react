@@ -1,14 +1,15 @@
 using Microsoft.AspNetCore.Mvc;
+using StefaniniDotNetReactChallenge.Application.DTOs;
 using StefaniniDotNetReactChallenge.Application.Interfaces;
-using StefaniniDotNetReactChallenge.Domain.Entities;
+using StefaniniDotNetReactChallenge.Application.Mappers;
 
 namespace StefaniniDotNetReactChallenge.API.Controllers;
 
 [ApiController]
 [ApiVersion("2.0")]
-[Tags("Person")]
 [Route("api/v{version:apiVersion}/person")]
-public class PersonControllerV2 : PersonControllerV1
+[Tags("Person")]
+public class PersonControllerV2 : PersonBasicController
 {
     private readonly IPersonService _service;
 
@@ -19,20 +20,18 @@ public class PersonControllerV2 : PersonControllerV1
     }
 
     [HttpPost]
-    public override async Task<IActionResult> Create(Person person)
+    public async Task<IActionResult> Create([FromBody] PersonCreateDtoV2 dto)
     {
-        var created = await _service.CreateAsync(person);
-        return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+        var created = await _service.CreateAsync(dto);
+        return CreatedAtAction(nameof(GetById),
+            new { id = created.Id },
+            PersonMapper.ToDto(created));
     }
 
     [HttpPut("{id}")]
-    public override async Task<IActionResult> Update(int id, Person person)
+    public async Task<IActionResult> Update([FromRoute] int id, [FromBody] PersonUpdateDtoV2 person)
     {
-        if (id != person.Id) return BadRequest();
-
         var updated = await _service.UpdateAsync(person);
-        return Ok(updated);
+        return Ok(PersonMapper.ToDto(updated));
     }
-
-
 }

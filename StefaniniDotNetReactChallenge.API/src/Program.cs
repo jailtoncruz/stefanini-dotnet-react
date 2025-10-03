@@ -1,5 +1,6 @@
 using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+
 using StefaniniDotNetReactChallenge.Extensions;
 using StefaniniDotNetReactChallenge.Configurations;
 using StefaniniDotNetReactChallenge.Infrastructure.Persistence;
@@ -22,7 +23,10 @@ builder.Services
     .AddRepositoriesConfiguration(builder.Configuration)
     .AddServicesConfiguration(builder.Configuration);
 
+
 var app = builder.Build();
+
+app.UseRouting();
 
 using (var scope = app.Services.CreateScope())
 {
@@ -61,6 +65,5 @@ else
 {
     app.MapFallbackToFile("index.html");
 }
-
 
 app.Run();

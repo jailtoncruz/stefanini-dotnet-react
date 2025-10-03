@@ -30,7 +30,10 @@ namespace StefaniniDotNetReactChallenge.Extensions
 
         public static IServiceCollection AddSwaggerConfigured(this IServiceCollection services)
         {
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(options =>
+            {
+                options.ResolveConflictingActions(endpoint => endpoint.Last());
+            });
             services.ConfigureOptions<ConfigureSwaggerOptions>();
             return services;
         }
