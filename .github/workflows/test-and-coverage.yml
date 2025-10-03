@@ -34,9 +34,6 @@ jobs:
             -targetdir:coveragereport \
             -reporttypes:Cobertura
 
-      - name: Install Qlty CLI
-        run: curl -sSL https://qlty.sh/install.sh | bash
-
       - uses: qltysh/qlty-action/coverage@v2
         name: Publish coverage to Qlty
         with:
