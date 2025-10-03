@@ -18,7 +18,7 @@ namespace StefaniniDotNetReactChallenge.Extensions
                 {
                     options.SwaggerEndpoint(
                         $"/api/swagger/{description.GroupName}/swagger.json",
-                        $"MyApi {description.GroupName.ToUpperInvariant()}");
+                        $"Challenge API Docs {description.GroupName.ToUpperInvariant()}");
                 }
             });
 

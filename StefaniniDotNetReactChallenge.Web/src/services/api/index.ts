@@ -1,7 +1,8 @@
 import Axios from "axios";
+import { getApiVersion } from "../../hooks/useApiVersion";
 
 export const api = Axios.create({
-  baseURL: "/api/v1",
+  baseURL: `/api/${getApiVersion()}`,
 });
 
 api.interceptors.request.use((config) => {

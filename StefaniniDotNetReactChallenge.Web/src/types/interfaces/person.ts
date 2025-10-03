@@ -2,7 +2,7 @@ export interface IPerson {
   id: number;
   name: string;
   email?: string;
-  birthDay: Date;
+  birthDay: string;
   cpf: string;
   gender: string;
   nationality: string;

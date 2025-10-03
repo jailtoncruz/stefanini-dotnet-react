@@ -30,7 +30,10 @@ public static class PersonMapper
             CPF = dto.CPF,
             BirthDay = dto.BirthDay,
             CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow
+            UpdatedAt = DateTime.UtcNow,
+            Gender = dto.Gender,
+            Nationality = dto.Nationality,
+            PlaceOfBirth = dto.PlaceOfBirth,
         };
     }
 }
