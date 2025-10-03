@@ -16,7 +16,9 @@ public class PersonRepository : IPersonRepository
 
     public async Task<IEnumerable<Person>> GetAllAsync()
     {
-        return await _context.People.ToListAsync();
+        return await _context.People
+            .OrderByDescending(p => p.UpdatedAt)
+            .ToListAsync();
     }
 
     public async Task<Person?> GetByIdAsync(int id)

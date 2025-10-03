@@ -26,8 +26,6 @@ builder.Services
 
 var app = builder.Build();
 
-app.UseRouting();
-
 using (var scope = app.Services.CreateScope())
 {
     var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -48,22 +46,25 @@ else
         FileProvider = new PhysicalFileProvider(staticFilesPath)
     });
 }
-app.UseAuthorization();
 
 var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwaggerConfigured(provider);
 
-app.MapControllers();
-app.MapHealthChecks("/api/health");
-
 if (app.Environment.IsDevelopment())
 {
     app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"),
-                appBuilder => { app.MapReverseProxy(); });
+                appBuilder =>
+                {
+                    appBuilder.UseRouting();
+                    appBuilder.UseEndpoints(endpoints => endpoints.MapReverseProxy());
+                });
 }
 else
 {
     app.MapFallbackToFile("index.html");
 }
+
+app.MapControllers();
+app.MapHealthChecks("/api/health");
 
 app.Run();
