@@ -1,0 +1,47 @@
+name: Test & Coverage
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "9.0.305"
+
+      - name: Install dependencies
+        run: dotnet restore
+
+      - name: Run tests with coverage
+        run: dotnet test --settings coverlet.runsettings --logger trx --results-directory ./TestResults
+
+      - name: Install report generator
+        run: dotnet tool install --global dotnet-reportgenerator-globaltool
+
+      - name: Generate coverage report
+        run: |
+          reportgenerator \
+            -reports:**/coverage.cobertura.xml \
+            -targetdir:coveragereport \
+            -reporttypes:Cobertura
+
+      - name: Install Qlty CLI
+        run: curl -sSL https://qlty.sh/install.sh | bash
+
+      - name: Publish coverage to Qlty
+        run: |
+          qlty coverage publish \
+            --token=${{ secrets.QLTY_TOKEN }} \
+            --override-build-id=${{ github.run_id }} \
+            --override-commit-sha=${{ github.sha }} \
+            --override-branch=${{ github.ref_name }} \
+            coveragereport/Cobertura.xml
