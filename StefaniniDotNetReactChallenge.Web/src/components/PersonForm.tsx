@@ -77,7 +77,7 @@ export function PersonForm({
         ...person,
         birthDay:
           person.birthDay !== ""
-            ? parse(person.birthDay, "dd/MM/yyyy", new Date())
+            ? parse(dateMask(person.birthDay), "dd/MM/yyyy", new Date())
             : undefined,
         email: person.email !== "" ? person.email : undefined,
       });

@@ -18,7 +18,6 @@ export function UpdatePersonDialog({
   person,
   children,
 }: UpdatePersonDialogProps) {
-  console.log(person);
   const closeButtonRef = useRef<HTMLButtonElement>(null);
   const client = useQueryClient();
 
