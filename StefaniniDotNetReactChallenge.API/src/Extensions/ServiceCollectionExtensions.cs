@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.Options;
 using StefaniniDotNetReactChallenge.API.Configurations;
+using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace StefaniniDotNetReactChallenge.Extensions
 {
@@ -29,25 +31,13 @@ namespace StefaniniDotNetReactChallenge.Extensions
             return services;
         }
 
-        public static IServiceCollection AddSwaggerConfigured(this IServiceCollection services)
+        public static void AddSwaggerConfigured(this IServiceCollection services)
         {
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen(options =>
             {
-                options.ResolveConflictingActions(endpoint => endpoint.Last());
-                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
-                {
-                    Name = "Authorization",
-                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
-                    Scheme = "bearer",
-                    BearerFormat = "JWT",
-                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-                    Description = "Insira aqui o token gerado no endpoint /login"
-                });
-
                 options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
-            services.ConfigureOptions<ConfigureSwaggerOptions>();
-            return services;
         }
 
         public static IServiceCollection AddCorsConfigured(this IServiceCollection services, IConfiguration config)

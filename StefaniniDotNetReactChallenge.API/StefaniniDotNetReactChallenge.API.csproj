@@ -19,4 +19,9 @@
     <ProjectReference Include="..\StefaniniDotNetReactChallenge.Application\StefaniniDotNetReactChallenge.Application.csproj" />
     <ProjectReference Include="..\StefaniniDotNetReactChallenge.Infrastructure\StefaniniDotNetReactChallenge.Infrastructure.csproj" />
   </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="StefaniniDotNetReactChallenge.Tests" />
+  </ItemGroup>
+
 </Project>

@@ -78,3 +78,5 @@ app.MapControllers();
 app.MapHealthChecks("/api/health");
 
 app.Run();
+
+public partial class Program { }

@@ -62,17 +62,44 @@ namespace StefaniniDotNetReactChallenge.Tests.Application
         }
 
         [Fact]
+        public async Task CreateAsync_V2_ShouldAddPerson()
+        {
+            PersonCreateDtoV2 dto = PersonFactory.CreatePersonCreateDtoV2();
+
+            var result = await _service.CreateAsync(dto);
+
+            result.Name.Should().Be(dto.Name);
+            _repoMock.Verify(r => r.AddAsync(It.IsAny<Person>()), Times.Once);
+        }
+
+        [Fact]
         public async Task UpdateAsync_V1_ShouldUpdatePerson()
         {
-            var dto = new PersonUpdateDtoV1 { Name = "Updated", };
-            var updatedPerson = PersonFactory.CreatePerson("Updated", "3137137131");
+            PersonUpdateDtoV1 dto = PersonFactory.CreatePersonUpdateDTOv1();
+
+            var updatedPerson = PersonFactory.CreatePerson(dto.Name, "3137137131");
             _repoMock.Setup(r => r.UpdateAsync(It.IsAny<Person>())).ReturnsAsync(updatedPerson);
 
             var result = await _service.UpdateAsync(dto);
 
-            result.Name.Should().Be("Updated");
+            result.Name.Should().Be(dto.Name);
             _repoMock.Verify(r => r.UpdateAsync(It.IsAny<Person>()), Times.Once);
         }
+
+        [Fact]
+        public async Task UpdateAsync_V2_ShouldUpdatePerson()
+        {
+            PersonUpdateDtoV2 dto = PersonFactory.CreatePersonUpdateDTOv2();
+
+            var updatedPerson = PersonFactory.CreatePerson(dto.Name, "3137137131");
+            _repoMock.Setup(r => r.UpdateAsync(It.IsAny<Person>())).ReturnsAsync(updatedPerson);
+
+            var result = await _service.UpdateAsync(dto);
+
+            result.Name.Should().Be(dto.Name);
+            _repoMock.Verify(r => r.UpdateAsync(It.IsAny<Person>()), Times.Once);
+        }
+
 
         [Fact]
         public async Task DeleteByIdAsync_ShouldCallRepositoryDelete()
