@@ -1,7 +1,7 @@
 using StefaniniDotNetReactChallenge.Domain.Interfaces;
 using StefaniniDotNetReactChallenge.Infrastructure.Repositories;
 
-namespace StefaniniDotNetReactChallenge.Configurations;
+namespace StefaniniDotNetReactChallenge.API.Configurations;
 
 public static class RepositoriesConfiguration
 {

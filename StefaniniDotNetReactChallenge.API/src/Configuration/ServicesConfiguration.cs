@@ -2,7 +2,7 @@
 using StefaniniDotNetReactChallenge.Application.Interfaces;
 using StefaniniDotNetReactChallenge.Application.Services;
 
-namespace StefaniniDotNetReactChallenge.Configurations;
+namespace StefaniniDotNetReactChallenge.API.Configurations;
 
 public static class ServicesConfiguration
 {

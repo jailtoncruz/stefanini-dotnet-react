@@ -2,11 +2,14 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 
 using StefaniniDotNetReactChallenge.Extensions;
-using StefaniniDotNetReactChallenge.Configurations;
 using StefaniniDotNetReactChallenge.Infrastructure.Persistence;
 using StefaniniDotNetReactChallenge.Infrastructure.Data;
+using StefaniniDotNetReactChallenge.API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
+
+var key = builder.Configuration["Jwt:Key"]!;
+var issuer = builder.Configuration["Jwt:Issuer"];
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -21,7 +24,8 @@ builder.Services.AddReverseProxy()
 builder.Services
     .AddDatabaseConfiguration(builder.Configuration)
     .AddRepositoriesConfiguration(builder.Configuration)
-    .AddServicesConfiguration(builder.Configuration);
+    .AddServicesConfiguration(builder.Configuration)
+    .AddAuthenticationConfiguration(builder.Configuration);
 
 
 var app = builder.Build();
@@ -35,6 +39,12 @@ using (var scope = app.Services.CreateScope())
 if (app.Environment.IsDevelopment())
 {
     app.UseCors("AllowReactApp");
+    app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"),
+               appBuilder =>
+               {
+                   appBuilder.UseRouting();
+                   appBuilder.UseEndpoints(endpoints => endpoints.MapReverseProxy());
+               });
 }
 else
 {
@@ -45,24 +55,24 @@ else
     {
         FileProvider = new PhysicalFileProvider(staticFilesPath)
     });
+    app.MapFallbackToFile("index.html");
+
 }
 
 var provider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
 app.UseSwaggerConfigured(provider);
 
-if (app.Environment.IsDevelopment())
-{
-    app.MapWhen(context => !context.Request.Path.StartsWithSegments("/api"),
-                appBuilder =>
-                {
-                    appBuilder.UseRouting();
-                    appBuilder.UseEndpoints(endpoints => endpoints.MapReverseProxy());
-                });
-}
-else
-{
-    app.MapFallbackToFile("index.html");
-}
+app.UseAuthentication();
+
+/*
+*   Esse warning está sendo suprimido porquê estamos usando o UseRouting e UseEndpoints 
+*   unicamente para redirecionar conexões da rota raiz diferente de /api
+*   para o servidor vive, apenas em Desenvolvimento
+*   by Jailton Cruz
+*/
+#pragma warning disable ASP0001 // Authorization middleware is incorrectly configured
+app.UseAuthorization();
+#pragma warning restore ASP0001 // Authorization middleware is incorrectly configured
 
 app.MapControllers();
 app.MapHealthChecks("/api/health");

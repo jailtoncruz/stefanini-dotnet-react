@@ -1,9 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using StefaniniDotNetReactChallenge.Application.Interfaces;
 using StefaniniDotNetReactChallenge.Application.Mappers;
 
 namespace StefaniniDotNetReactChallenge.API.Controllers;
 
+[Authorize]
 public abstract class PersonBasicController : BaseApiController
 {
     private readonly IPersonService _service;

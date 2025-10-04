@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using StefaniniDotNetReactChallenge.Infrastructure.Data;
 
-namespace StefaniniDotNetReactChallenge.Configurations;
+namespace StefaniniDotNetReactChallenge.API.Configurations;
 
 public static class DatabaseConfiguration
 {

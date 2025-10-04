@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using StefaniniDotNetReactChallenge.API.Configurations;
 
 namespace StefaniniDotNetReactChallenge.Extensions
 {
@@ -33,6 +34,17 @@ namespace StefaniniDotNetReactChallenge.Extensions
             services.AddSwaggerGen(options =>
             {
                 options.ResolveConflictingActions(endpoint => endpoint.Last());
+                options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
+                {
+                    Name = "Authorization",
+                    Type = Microsoft.OpenApi.Models.SecuritySchemeType.Http,
+                    Scheme = "bearer",
+                    BearerFormat = "JWT",
+                    In = Microsoft.OpenApi.Models.ParameterLocation.Header,
+                    Description = "Insira aqui o token gerado no endpoint /login"
+                });
+
+                options.OperationFilter<AuthorizeCheckOperationFilter>();
             });
             services.ConfigureOptions<ConfigureSwaggerOptions>();
             return services;
