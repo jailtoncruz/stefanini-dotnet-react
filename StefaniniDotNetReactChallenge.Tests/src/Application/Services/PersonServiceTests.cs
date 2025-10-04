@@ -7,6 +7,7 @@ using StefaniniDotNetReactChallenge.Application.Services;
 using StefaniniDotNetReactChallenge.Domain.Entities;
 using StefaniniDotNetReactChallenge.Domain.Interfaces;
 using StefaniniDotNetReactChallenge.Application.DTOs;
+using StefaniniDotNetReactChallenge.Tests.Helpers;
 
 namespace StefaniniDotNetReactChallenge.Tests.Application
 {
@@ -26,8 +27,8 @@ namespace StefaniniDotNetReactChallenge.Tests.Application
         {
             var persons = new List<Person>
             {
-                PersonFactory("Jailton", "3183918381"),
-                PersonFactory("Cruz", "3183918381")
+                PersonFactory.CreatePerson("Jailton", "3183918381"),
+                PersonFactory.CreatePerson("Cruz", "3183918381")
             };
             _repoMock.Setup(r => r.GetAllAsync()).ReturnsAsync(persons);
 
@@ -40,7 +41,7 @@ namespace StefaniniDotNetReactChallenge.Tests.Application
         [Fact]
         public async Task GetByIdAsync_ShouldReturnCorrectPerson()
         {
-            var person = PersonFactory("Cruz", "3183918381");
+            var person = PersonFactory.CreatePerson("Cruz", "3183918381");
             _repoMock.Setup(r => r.GetByIdAsync(1)).ReturnsAsync(person);
 
             var result = await _service.GetByIdAsync(1);
@@ -64,7 +65,7 @@ namespace StefaniniDotNetReactChallenge.Tests.Application
         public async Task UpdateAsync_V1_ShouldUpdatePerson()
         {
             var dto = new PersonUpdateDtoV1 { Name = "Updated", };
-            var updatedPerson = PersonFactory("Updated", "3137137131");
+            var updatedPerson = PersonFactory.CreatePerson("Updated", "3137137131");
             _repoMock.Setup(r => r.UpdateAsync(It.IsAny<Person>())).ReturnsAsync(updatedPerson);
 
             var result = await _service.UpdateAsync(dto);
@@ -79,19 +80,6 @@ namespace StefaniniDotNetReactChallenge.Tests.Application
             await _service.DeleteByIdAsync(5);
 
             _repoMock.Verify(r => r.DeleteByIdAsync(5), Times.Once);
-        }
-
-        private Person PersonFactory(string Name, string CPF)
-        {
-            return new Person
-            {
-                Id = 1,
-                Name = Name,
-                BirthDay = new DateOnly(),
-                CPF = CPF,
-                CreatedAt = new DateTime(),
-                UpdatedAt = new DateTime()
-            };
         }
     }
 }

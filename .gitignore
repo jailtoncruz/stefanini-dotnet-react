@@ -311,3 +311,5 @@ ehthumbs.db
 .history
 
 # End of https://www.toptal.com/developers/gitignore/api/visualstudiocode,react,node,windows,macos,dotnet
+
+coveragereport
