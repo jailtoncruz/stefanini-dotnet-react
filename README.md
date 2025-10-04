@@ -118,3 +118,9 @@ pnpm dev
     ```
 
 A aplicação estará acessível em `http://localhost:8080`.
+
+## Test Coverage
+
+<div align="center">
+  <img src="./assets/qlty.png" alt="Code Quality by qlty" />
+</div>
