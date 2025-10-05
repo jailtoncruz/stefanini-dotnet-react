@@ -31,7 +31,7 @@ public class PersonControllerV2 : PersonBasicController
     [HttpPut("{id}")]
     public async Task<IActionResult> Update([FromRoute] int id, [FromBody] PersonUpdateDtoV2 person)
     {
-        var updated = await _service.UpdateAsync(person);
+        var updated = await _service.UpdateAsync(id, person);
         return Ok(PersonMapper.ToDto(updated));
     }
 }

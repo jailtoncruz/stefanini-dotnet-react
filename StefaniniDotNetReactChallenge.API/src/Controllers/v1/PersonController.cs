@@ -30,7 +30,7 @@ public class PersonControllerV1 : PersonBasicController
     [HttpPut("{id}")]
     public virtual async Task<IActionResult> Update(int id, [FromBody] PersonUpdateDtoV1 dto)
     {
-        var updated = await _service.UpdateAsync(dto);
+        var updated = await _service.UpdateAsync(id, dto);
         return Ok(PersonMapper.ToDto(updated));
     }
 }

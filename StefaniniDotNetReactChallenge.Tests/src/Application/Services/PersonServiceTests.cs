@@ -80,7 +80,7 @@ namespace StefaniniDotNetReactChallenge.Tests.Application
             var updatedPerson = PersonFactory.CreatePerson(dto.Name, "3137137131");
             _repoMock.Setup(r => r.UpdateAsync(It.IsAny<Person>())).ReturnsAsync(updatedPerson);
 
-            var result = await _service.UpdateAsync(dto);
+            var result = await _service.UpdateAsync(updatedPerson.Id, dto);
 
             result.Name.Should().Be(dto.Name);
             _repoMock.Verify(r => r.UpdateAsync(It.IsAny<Person>()), Times.Once);
@@ -94,7 +94,7 @@ namespace StefaniniDotNetReactChallenge.Tests.Application
             var updatedPerson = PersonFactory.CreatePerson(dto.Name, "3137137131");
             _repoMock.Setup(r => r.UpdateAsync(It.IsAny<Person>())).ReturnsAsync(updatedPerson);
 
-            var result = await _service.UpdateAsync(dto);
+            var result = await _service.UpdateAsync(updatedPerson.Id, dto);
 
             result.Name.Should().Be(dto.Name);
             _repoMock.Verify(r => r.UpdateAsync(It.IsAny<Person>()), Times.Once);

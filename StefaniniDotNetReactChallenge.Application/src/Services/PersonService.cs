@@ -38,14 +38,16 @@ public class PersonService : IPersonService
         return entity;
     }
 
-    public async Task<Person> UpdateAsync(PersonUpdateDtoV1 dto)
+    public async Task<Person> UpdateAsync(int Id, PersonUpdateDtoV1 dto)
     {
         Person entity = PersonMapper.ToEntity(dto);
+        entity.Id = Id;
         return await _repository.UpdateAsync(entity);
     }
-    public async Task<Person> UpdateAsync(PersonUpdateDtoV2 dto)
+    public async Task<Person> UpdateAsync(int Id, PersonUpdateDtoV2 dto)
     {
         Person entity = PersonMapper.ToEntity(dto);
+        entity.Id = Id;
         return await _repository.UpdateAsync(entity);
     }
 

@@ -74,7 +74,7 @@ namespace StefaniniDotNetReactChallenge.Tests.API.Controllers
             var updatedPerson = PersonFactory.CreatePerson("Updated", updateDto.CPF);
 
             _personServiceMock
-                .Setup(x => x.UpdateAsync(updateDto))
+                .Setup(x => x.UpdateAsync(updatedPerson.Id, updateDto))
                 .ReturnsAsync(updatedPerson);
 
             // Act
@@ -87,7 +87,7 @@ namespace StefaniniDotNetReactChallenge.Tests.API.Controllers
             okResult!.Value.Should().NotBeNull();
             okResult.Value.Should().NotBeSameAs(updatedPerson); // Should be mapped DTO
 
-            _personServiceMock.Verify(x => x.UpdateAsync(updateDto), Times.Once);
+            _personServiceMock.Verify(x => x.UpdateAsync(updatedPerson.Id, updateDto), Times.Once);
         }
 
         [Fact]
@@ -98,7 +98,7 @@ namespace StefaniniDotNetReactChallenge.Tests.API.Controllers
             var updatedPerson = PersonFactory.CreatePerson("Updated", updateDto.CPF);
 
             _personServiceMock
-                .Setup(x => x.UpdateAsync(updateDto))
+                .Setup(x => x.UpdateAsync(updatedPerson.Id, updateDto))
                 .ReturnsAsync(updatedPerson);
 
             // Act - Different ID in route vs DTO
@@ -106,7 +106,7 @@ namespace StefaniniDotNetReactChallenge.Tests.API.Controllers
 
             // Assert - Service should be called with DTO's ID, not route ID
             result.Should().BeOfType<OkObjectResult>();
-            _personServiceMock.Verify(x => x.UpdateAsync(updateDto), Times.Once);
+            _personServiceMock.Verify(x => x.UpdateAsync(updatedPerson.Id, updateDto), Times.Once);
         }
 
         [Fact]
@@ -116,7 +116,7 @@ namespace StefaniniDotNetReactChallenge.Tests.API.Controllers
             var updateDto = PersonFactory.CreatePersonUpdateDTOv1();
 
             _personServiceMock
-                .Setup(x => x.UpdateAsync(updateDto))
+                .Setup(x => x.UpdateAsync(1, updateDto))
                 .ThrowsAsync(new Exception("Update failed"));
 
             // Act
@@ -227,7 +227,7 @@ namespace StefaniniDotNetReactChallenge.Tests.API.Controllers
             var updatedPerson = PersonFactory.CreatePerson(updateDto.Name, updateDto.CPF);
 
             _personServiceMock
-                .Setup(x => x.UpdateAsync(updateDto))
+                .Setup(x => x.UpdateAsync(updatedPerson.Id, updateDto))
                 .ReturnsAsync(updatedPerson);
 
             // Act
