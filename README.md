@@ -132,15 +132,14 @@ Ambas estão acessíveis por rotas separadas:
 
 A autenticação foi implementada utilizando **JSON Web Token (JWT)**, permitindo que o frontend obtenha um token de acesso para realizar chamadas autenticadas à API.
 
-Para simplificar a validação no contexto do desafio técnico, o endpoint de login **não exige usuários pré-cadastrados**.  
-Qualquer nome informado no login gera um token JWT válido com um papel padrão (`Guest`), permitindo o uso completo da aplicação de forma prática e direta.
+Adicionei 3 nomes de usuários chaves para gerar o token, sendo **Jailton, Andressa e Stefanini**, o input é independentemente de letras maiúsculas ou minúsculas (case-insensitive).
 
 **Exemplo de uso:**
 
 ```bash
 POST /api/v1/auth/login
 {
-  "username": "teste"
+  "username": "stefanini"
 }
 ```
 
