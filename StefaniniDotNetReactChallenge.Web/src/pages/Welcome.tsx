@@ -14,9 +14,10 @@ export function Welcome() {
       const { token } = await authenticate(name);
       localStorage.setItem("authToken", token);
       router("/");
-      toast(`Olá, ${name}`);
+      toast(`Bem-vindo(a)!`);
     } catch (_err) {
       toast("Ops... Algo deu erro, tente novamente.");
+      setName("");
     }
   };
 
@@ -43,7 +44,7 @@ export function Welcome() {
           className="flex flex-col gap-4"
         >
           <TextField.Root
-            placeholder="Como deseja ser chamado?*"
+            placeholder="Insira um dos nomes chaves (Jailton, Stefanini ou Andressa)."
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}

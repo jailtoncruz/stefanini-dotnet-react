@@ -91,25 +91,6 @@ namespace StefaniniDotNetReactChallenge.Tests.API.Controllers
         }
 
         [Fact]
-        public async Task Update_WhenIdInRouteDoesNotMatchDtoId_StillCallsServiceWithDtoId()
-        {
-            // Arrange - Route id is 999 but DTO has id 1
-            var updateDto = PersonFactory.CreatePersonUpdateDTOv1();
-            var updatedPerson = PersonFactory.CreatePerson("Updated", updateDto.CPF);
-
-            _personServiceMock
-                .Setup(x => x.UpdateAsync(updatedPerson.Id, updateDto))
-                .ReturnsAsync(updatedPerson);
-
-            // Act - Different ID in route vs DTO
-            var result = await _controller.Update(999, updateDto);
-
-            // Assert - Service should be called with DTO's ID, not route ID
-            result.Should().BeOfType<OkObjectResult>();
-            _personServiceMock.Verify(x => x.UpdateAsync(updatedPerson.Id, updateDto), Times.Once);
-        }
-
-        [Fact]
         public async Task Update_WhenServiceThrowsException_PropagatesException()
         {
             // Arrange

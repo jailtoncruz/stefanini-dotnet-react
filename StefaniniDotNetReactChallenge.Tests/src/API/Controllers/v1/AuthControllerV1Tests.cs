@@ -37,7 +37,7 @@ namespace StefaniniDotNetReactChallenge.Tests.Controllers
         public void Login_ShouldReturn_ValidJwtToken()
         {
             // Arrange
-            var request = new LoginRequest("ChatGPT");
+            var request = new LoginRequest("Jailton");
 
             // Act
             var result = _controller.Login(request) as OkObjectResult;
@@ -62,7 +62,7 @@ namespace StefaniniDotNetReactChallenge.Tests.Controllers
             var roleClaim = jwt.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role);
 
             nameClaim.Should().NotBeNull();
-            nameClaim!.Value.Should().Be("ChatGPT");
+            nameClaim!.Value.Should().Be("Jailton");
 
             roleClaim.Should().NotBeNull();
             roleClaim!.Value.Should().Be("Guest");
@@ -72,7 +72,7 @@ namespace StefaniniDotNetReactChallenge.Tests.Controllers
         public void GeneratedToken_ShouldBeValid_UsingSameKey()
         {
             // Arrange
-            var request = new LoginRequest("TomCruz");
+            var request = new LoginRequest("Jailton");
             var result = _controller.Login(request) as OkObjectResult;
 
             // Extract token from anonymous object via reflection

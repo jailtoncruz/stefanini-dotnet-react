@@ -1,26 +1,32 @@
-# Desafio Stefanini .NET React
+# 🚀 Desafio Stefanini .NET + React
 
-<div style="display: flex; justify-content: center; align-items: center;" align="center">
+<div align="center">
 
 [![Maintainability](https://qlty.sh/gh/jailtoncruz/projects/stefanini-dotnet-react/maintainability.svg)](https://qlty.sh/gh/jailtoncruz/projects/stefanini-dotnet-react)
 [![Code Coverage](https://qlty.sh/gh/jailtoncruz/projects/stefanini-dotnet-react/coverage.svg)](https://qlty.sh/gh/jailtoncruz/projects/stefanini-dotnet-react)
 
 </div>
 
-Este projeto é uma aplicação web full-stack construída com .NET 9 para o backend e React para o frontend. Ele é estruturado como um monorepo usando pnpm workspaces e Turbo para gerenciar os processos de desenvolvimento e build.
+Este projeto é uma **aplicação web full-stack** desenvolvida com **.NET 9 (ASP.NET Core)** no backend e **React (Vite)** no frontend.  
+A estrutura segue o formato de **monorepo**, utilizando **pnpm workspaces** e **Turborepo** para gerenciar o desenvolvimento, build e deploy.
 
-## Arquitetura
+---
 
-O projeto segue o padrão de Clean Architecture para o backend .NET, separando as responsabilidades em camadas distintas. O frontend é uma single-page application (SPA) construída com React e Vite.
+## 🧩 Arquitetura
 
-A solução está organizada nos seguintes projetos:
+O backend segue o padrão **Clean Architecture**, separando responsabilidades em camadas distintas.  
+O frontend é uma **single-page application (SPA)** desenvolvida com React e Vite, garantindo alta performance e recarregamento rápido.
 
-- `StefaniniDotNetReactChallenge.API`: O ponto de entrada principal do backend, uma ASP.NET Core Web API que expõe as funcionalidades da aplicação através de uma interface RESTful.
-- `StefaniniDotNetReactChallenge.Application`: Contém a lógica da aplicação, serviços e data transfer objects (DTOs).
-- `StefaniniDotNetReactChallenge.Domain`: Inclui as entidades de domínio, interfaces para repositórios e regras de negócio específicas do domínio.
-- `StefaniniDotNetReactChallenge.Infrastructure`: Implementa a lógica de persistência de dados usando Entity Framework Core e fornece implementações concretas para as interfaces de repositório definidas na camada de Domínio.
-- `StefaniniDotNetReactChallenge.Web`: A aplicação frontend em React.
-- `StefaniniDotNetReactChallenge.Tests`: Projeto de testes
+### 🏗️ Estrutura da Solução
+
+- **`StefaniniDotNetReactChallenge.API`** — Ponto de entrada do backend, uma ASP.NET Core Web API que expõe endpoints RESTful.
+- **`StefaniniDotNetReactChallenge.Application`** — Contém a lógica de negócio, serviços e DTOs.
+- **`StefaniniDotNetReactChallenge.Domain`** — Define entidades, regras de negócio e interfaces de repositório.
+- **`StefaniniDotNetReactChallenge.Infrastructure`** — Implementa a persistência de dados com Entity Framework Core.
+- **`StefaniniDotNetReactChallenge.Web`** — Aplicação frontend em React (SPA com Vite).
+- **`StefaniniDotNetReactChallenge.Tests`** — Conjunto de testes automatizados para os componentes do backend.
+
+---
 
 ### Diagrama da Arquitetura
 
@@ -31,71 +37,188 @@ graph TD
     end
 
     subgraph Backend .NET
-        B[API Controller]
-        C[Serviço da Aplicação]
-        D[Domínio]
-        E[Infraestrutura]
+        B[API Controllers]
+        C[Serviços da Aplicação]
+        D[Camada de Domínio]
+        E[Camada de Infraestrutura]
     end
 
     subgraph Banco de Dados
-        F[Banco de Dados In-Memory H2]
+        F[(Banco H2 In-Memory)]
     end
 
-    A -- Requisição HTTP /api --> B
-    B -- Chama --> C
-    C -- Usa --> D
-    C -- Usa --> E
-    E -- Acessa --> F
+    A -- HTTP /api --> B
+    B --> C
+    C --> D
+    C --> E
+    E --> F
 ```
 
-### Desenvolvimento vs. Produção
+## ✅ Atendendo aos Requisitos do Desafio Técnico
 
-**Desenvolvimento:**
+Este projeto foi desenvolvido para atender integralmente às especificações do desafio técnico.
+Abaixo, segue um resumo de como cada requisito foi implementado.
 
-- O frontend React é servido pelo servidor de desenvolvimento do Vite em `http://localhost:5173`.
-- O backend .NET é executado em `https://localhost:7009`.
-- Para lidar com as requisições para a API, o servidor Vite atua como um proxy para qualquer requisição de `/api` para o backend.
-- A aplicação .NET também encaminha requisições da root para o servidor vite `https://localhost:7009` -> `http://localhost:5173`, fazendo com que seja possivel acessar toda a aplicação por um único endereço.
-- A API .NET é configurada com CORS para permitir requisições do servidor de desenvolvimento do Vite.
+---
 
-**Produção:**
+### 🧩 1. Back-end (.NET 9 API REST)
 
-- A aplicação React é compilada em arquivos estáticos (HTML, CSS, JS).
-- Esses arquivos estáticos são colocados na pasta `wwwroot` do projeto `StefaniniDotNetReactChallenge.API`.
-- A aplicação ASP.NET Core serve os arquivos estáticos da aplicação React e lida com as requisições da API na mesma porta.
-- O `Dockerfile` empacota tudo em uma única imagem de contêiner para implantação. A aplicação é exposta na porta `8080`.
+A API foi desenvolvida em **ASP.NET Core 9**, seguindo o padrão **RESTful** e **Clean Architecture**.  
+Ela oferece todas as operações CRUD para o gerenciamento de pessoas:
 
-### DevOps
+- **Cadastro (POST /api/v1/person)** – Criação de novos registros.
+- **Alteração (PUT /api/v1/person/{id})** – Atualização de dados existentes.
+- **Remoção (DELETE /api/v1/person/{id})** – Exclusão de registros.
+- **Consulta (GET /api/v1/person)** – Listagem e busca de pessoas.
+- **Consulta por Id (GET /api/v1/person/{id})** – Busca uma pessoa pelo Id.
 
-Aplicação está publicada no Oracle Cloud utilizando VPN e um serviço chamado EasyPanel, o dominio `stefanini-challenge.tomcruz.dev` está publicado no CloudFlare utilizando Proxy DNS como uma camada extra de segurança.
+**Validações implementadas:**
 
-## Pré-requisitos
+- **Nome**: obrigatório
+- **Data de nascimento**: obrigatória, com validação de formato
+- **CPF**: obrigatório, validado quanto ao formato e **unicidade**
+- **E-mail**: opcional, validado quando informado
+- **Naturalidade, Nacionalidade e Sexo**: opcionais
+- **Datas de criação e atualização** armazenadas automaticamente
+
+---
+
+### 💻 2. Front-end (React + Vite)
+
+O frontend foi desenvolvido em **React 18 + Vite**, com foco em uma **interface limpa, responsiva e intuitiva**.  
+Permite executar todas as operações do CRUD:
+
+- **Cadastro de pessoa**
+- **Edição de informações existentes**
+- **Remoção de registros**
+- **Busca e listagem de pessoas**
+
+A comunicação com o backend é feita via **fetch API** e controlada através de rotas RESTful.  
+O frontend também possui tratamento de erros e feedbacks visuais claros para o usuário.
+
+---
+
+## ⚡ Extras Implementados
+
+### 📘 Swagger (Documentação de Endpoints)
+
+A API está documentada com **Swagger (Swashbuckle)**, permitindo explorar e testar endpoints diretamente pela interface.  
+A documentação é acessível em `/api/swagger`.
+
+---
+
+### 🗄️ Banco de Dados H2
+
+A aplicação utiliza o **banco de dados em memória H2**, conforme solicitado.  
+Essa abordagem facilita a execução local e os testes automatizados sem necessidade de configuração externa.
+
+---
+
+### 🔢 Versionamento da API
+
+Foram implementadas duas versões de API:
+
+- **v1**: CRUD completo de pessoas (sem endereço de email obrigatório).
+- **v2**: Inclui o campo **Email** como obrigatório, mantendo a v1 funcional.
+
+Ambas estão acessíveis por rotas separadas:
+
+- `/api/v1/person`
+- `/api/v2/person`
+
+---
+
+### 🔐 Autenticação JWT
+
+A autenticação foi implementada utilizando **JSON Web Token (JWT)**, permitindo que o frontend obtenha um token de acesso para realizar chamadas autenticadas à API.
+
+Para simplificar a validação no contexto do desafio técnico, o endpoint de login **não exige usuários pré-cadastrados**.  
+Qualquer nome informado no login gera um token JWT válido com um papel padrão (`Guest`), permitindo o uso completo da aplicação de forma prática e direta.
+
+**Exemplo de uso:**
+
+```bash
+POST /api/v1/auth/login
+{
+  "username": "teste"
+}
+```
+
+```json
+{
+  "token": "<jwt_token>"
+}
+```
+
+---
+
+### 🧪 Testes Automatizados (xUnit)
+
+Os testes automatizados foram implementados com **xUnit**, abrangendo:
+
+- Camada de aplicação e domínio
+- Validações de entidades
+- Operações CRUD simuladas
+
+A cobertura de testes supera **80%** e é reportada via **Qlty.sh**, com integração visual no README.
+
+---
+
+## ⚙️ Ambientes de Execução
+
+### 🧑‍💻 Desenvolvimento
+
+- O frontend (Vite) roda em **`http://localhost:5173`**.
+- O backend (.NET) roda em **`https://localhost:7009`**.
+- O Vite atua como **proxy**, redirecionando requisições de `/api` para o backend.
+- O servidor .NET também encaminha a rota raiz para o Vite, permitindo acesso à aplicação por um único endereço.
+- O CORS é configurado para permitir conexões locais durante o desenvolvimento.
+
+### 🚀 Produção
+
+- O React é compilado em arquivos estáticos (`HTML`, `CSS`, `JS`) dentro da pasta `wwwroot` do projeto API.
+- O ASP.NET Core serve tanto a **aplicação React** quanto os **endpoints da API** na mesma porta.
+- O **Dockerfile** gera uma imagem única de contêiner, exposta na **porta 8080**.
+
+---
+
+## DevOps & Deploy
+
+A aplicação está hospedada na **Oracle Cloud**, utilizando **VPN** e o serviço **EasyPanel** para gerenciamento.  
+O domínio **[`stefanini-challenge.tomcruz.dev`](https://stefanini-challenge.tomcruz.dev)** está publicado na **Cloudflare**, com **Proxy DNS** habilitado como camada adicional de segurança.
+
+---
+
+## 🪛 Pré-requisitos
+
+Certifique-se de ter instaladas as seguintes ferramentas:
 
 - [.NET 9.0 SDK](https://dotnet.microsoft.com/download/dotnet/9.0)
 - [Node.js 22.14](https://nodejs.org/en/download/)
 - [pnpm](https://pnpm.io/installation)
-- [Docker](https://www.docker.com/get-started) (para executar em modo de produção)
+- [Docker](https://www.docker.com/get-started) _(para execução em produção)_
 
-## Instalação
+---
 
-1.  **Clone o repositório:**
+## 🧱 Instalação
 
-    ```bash
-    git clone https://github.com/jailtoncruz/stefanini-dotnet-react.git
-    cd challenge-dotnet-react
-    ```
+1. **Clone o repositório:**
 
-2.  **Instale as dependências:**
-    Este comando instalará as dependências do .NET e do Node.js.
-    ```bash
-    pnpm install
-    ```
+   ```bash
+   git clone https://github.com/jailtoncruz/stefanini-dotnet-react.git
+   cd stefanini-dotnet-react
+   ```
 
-## Executando a Aplicação
+2. **Instale as dependências:**
+   ```bash
+   pnpm install
+   ```
 
-### Desenvolvimento
+## ▶️ Execução da Aplicação
 
-Para iniciar o backend e o frontend em modo de desenvolvimento com hot-reloading, execute:
+### 🧑‍💻 Modo Desenvolvimento
+
+Inicie o backend e o frontend com hot-reload:
 
 ```bash
 pnpm dev
@@ -104,7 +227,7 @@ pnpm dev
 - A API estará acessível em `https://localhost:7009`.
 - A aplicação web estará disponível em `http://localhost:5173`.
 
-### Produção (com Docker)
+### Produção (Docker)
 
 1.  **Compile a imagem Docker:**
 
@@ -121,6 +244,9 @@ A aplicação estará acessível em `http://localhost:8080`.
 
 ## Test Coverage
 
-<div align="center">
-  <img src="./assets/qlty.png" alt="Code Quality by qlty" />
-</div>
+<div align="center"> <img src="./assets/qlty.png" alt="Code Quality by Qlty" width="400" /> <p><em>Relatórios de qualidade e cobertura de código fornecidos por Qlty.sh</em></p> </div>
+
+## Licença
+
+Este projeto foi desenvolvido como parte do Desafio Técnico Stefanini
+e é fornecido apenas para fins de demonstração e avaliação.

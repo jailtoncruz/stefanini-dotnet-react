@@ -21,6 +21,7 @@ public static class PersonMapper
             PlaceOfBirth = entity.PlaceOfBirth,
         };
     }
+
     public static Person ToEntity(IPersonBaseDto dto)
     {
         return new Person
@@ -29,11 +30,11 @@ public static class PersonMapper
             Email = dto.Email,
             CPF = dto.CPF,
             BirthDay = dto.BirthDay,
-            CreatedAt = DateTime.UtcNow,
-            UpdatedAt = DateTime.UtcNow,
             Gender = dto.Gender,
             Nationality = dto.Nationality,
             PlaceOfBirth = dto.PlaceOfBirth,
+            CreatedAt = DateTime.UtcNow,
+            UpdatedAt = DateTime.UtcNow,
         };
     }
 }

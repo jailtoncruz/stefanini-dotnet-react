@@ -16,16 +16,30 @@ public class AuthControllerV1 : BaseApiController
 {
     private readonly string _jwt_key;
     private readonly string _jwt_issuer;
+    private readonly HashSet<string> _authorizedUsernames;
     public AuthControllerV1(IConfiguration config)
     {
 
         _jwt_key = config["Jwt:Key"]!;
         _jwt_issuer = config["Jwt:Issuer"]!;
+
+        _authorizedUsernames = new HashSet<string>(StringComparer.OrdinalIgnoreCase)
+        {
+            "Stefanini",
+            "Jailton",
+            "Andressa"
+        };
     }
 
     [HttpPost("login")]
     public IActionResult Login([FromBody] LoginRequest request)
     {
+        if (!_authorizedUsernames.Contains(request.Username))
+            return BadRequest(new
+            {
+                Error = "Not authorized"
+            });
+
         var token = GenerateJwtToken(request.Username);
         return Ok(new { token });
     }

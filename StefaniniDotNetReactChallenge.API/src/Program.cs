@@ -8,9 +8,6 @@ using StefaniniDotNetReactChallenge.API.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var key = builder.Configuration["Jwt:Key"]!;
-var issuer = builder.Configuration["Jwt:Issuer"];
-
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHealthChecks();
